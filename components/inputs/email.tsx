@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     height: 64,
   },
   errorLabel: {
-    paddingLeft: 14,
+    paddingLeft: 4,
     color: 'red',
   }
 });

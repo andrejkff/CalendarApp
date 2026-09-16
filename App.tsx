@@ -2,8 +2,13 @@ import { StatusBar, StyleSheet, useColorScheme, View, Text } from 'react-native'
 import {
   SafeAreaProvider,
 } from 'react-native-safe-area-context';
+import { auth } from './firebase';
 
-import RegisterComponent from './components/auth/register';
+import RegisterLoginComponent from './components/auth/registerLogin';
+
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { useState, useEffect } from 'react';
+import { SCREEN_NAMES } from './constants/appNavigation';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -17,10 +22,28 @@ function App() {
 }
 
 function AppContent() {
+  const [screen, setScreen] = useState<string>(SCREEN_NAMES.CALENDAR);
+
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>();
+
+  useEffect(() => {
+    return onAuthStateChanged(auth, user => {
+      setUser(user);
+      setLoading(false);
+      if (!user)
+        setScreen(SCREEN_NAMES.AUTH)
+      else
+        setScreen(SCREEN_NAMES.CALENDAR);
+    });
+  }, []);
+
+  if (loading) return null;
 
   return (
     <View style={styles.container}>
-      <RegisterComponent />
+      {screen === SCREEN_NAMES.AUTH && <RegisterLoginComponent />}
+      {screen === SCREEN_NAMES.CALENDAR && <Text style={{ fontSize: 80 }}>Calendar</Text>}
     </View>
   );
 }

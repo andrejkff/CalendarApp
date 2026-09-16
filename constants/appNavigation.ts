@@ -1,0 +1,5 @@
+export const SCREEN_NAMES = {
+  AUTH: 'AUTH',
+  PROFILE: 'PROFILE',
+  CALENDAR: 'CALENDAR',
+};

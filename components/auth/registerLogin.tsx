@@ -1,12 +1,12 @@
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, Button, Text } from 'react-native';
 import EmailInput from '../inputs/email';
 import PasswordInput from '../inputs/password';
 import { auth } from '../../firebase';
 import { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword  } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
-export default function Register() {
-  // const auth = getAuth();
+export default function RegisterLogin() {
+  const [mode, setMode] = useState<'register' | 'login'>('register');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [validityState, setValidityState] = useState<{ password: boolean, email: boolean}>({
@@ -20,17 +20,33 @@ export default function Register() {
 
   const submitDisabled = (): boolean => loading || !formIsValid();
 
-  const registerUser = async () => {
+  const submit = async () => {
     if (loading) return;
     setLoading(true);
-    createUserWithEmailAndPassword(auth, email, password)
-    .then(userCredential => {
-      console.log(userCredential)
-    })
+    const actionFn = mode === 'register' ? createUserWithEmailAndPassword : signInWithEmailAndPassword;
+    actionFn(auth, email, password)
     .catch(error => {
       setLoading(false);
       setError(error.message);
     });
+  };
+
+  function switchToLoginUi() {
+    return (
+      <View style={styles.modeToggle}>
+        <Text>Already have an account?</Text>
+        <Button title="Log in" onPress={() => setMode('login')} />
+      </View>
+    )
+  };
+
+  function switchToRegisterUi() {
+    return (
+      <View style={styles.modeToggle}>
+        <Text>Do not have an account?</Text>
+        <Button title="Register" onPress={() => setMode('register')} />
+      </View>
+    )
   };
 
   return (
@@ -50,10 +66,12 @@ export default function Register() {
         })}
       />
       <Button
-        title="Create account"
+        title={mode === 'register' ? 'Sign up' : 'Log in'}
         disabled={submitDisabled()}
-        onPress={registerUser}
+        onPress={submit}
       />
+      {mode === 'register' ? switchToLoginUi() : switchToRegisterUi()}
+      {error ? <Text>{error}</Text> : <></>}
     </View>
   );
 };
@@ -65,4 +83,9 @@ const styles = StyleSheet.create({
     gap: 24,
     padding: 24,
   },
+  modeToggle: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+  }
 });
