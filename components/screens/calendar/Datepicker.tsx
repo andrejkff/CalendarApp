@@ -2,10 +2,10 @@ import { View, StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
 import calendarService from './_service';
 
-import CalendarDayDropdownComponent from '../shared/inputs/calendarDayDropdown';
-import CalendarMonthDropdownComponent from '../shared/inputs/calendarMonthDropdown';
-import CalendarYearInputComponent from '../shared/inputs/calendarYear';
-import HoursDropdownComponent from '../shared/inputs/hoursDropdown';
+import CalendarDayDropdownComponent from '../../shared/inputs/calendarDayDropdown';
+import CalendarMonthDropdownComponent from '../../shared/inputs/calendarMonthDropdown';
+import CalendarYearInputComponent from '../../shared/inputs/calendarYear';
+import HoursDropdownComponent from '../../shared/inputs/hoursDropdown';
 
 interface Props {
   onDateChanged: (newDate: Date) => void;

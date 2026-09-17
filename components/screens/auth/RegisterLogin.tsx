@@ -1,8 +1,8 @@
 import { StyleSheet, View, Button, Text } from 'react-native';
-import EmailInputComponent from '../shared/inputs/email';
-import PasswordInputComponent from '../shared/inputs/password';
-import ErrorComponent from '../shared/error';
-import { auth } from '../../firebase';
+import EmailInputComponent from '../../shared/inputs/email';
+import PasswordInputComponent from '../../shared/inputs/password';
+import ErrorComponent from '../../shared/error';
+import { auth } from '../../../firebase';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 

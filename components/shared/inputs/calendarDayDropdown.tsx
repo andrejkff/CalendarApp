@@ -3,7 +3,7 @@ import { IGenericCalendarInputProps } from '../../../types/components/inputs';
 import { View, Text } from 'react-native';
 import { styles } from './_styles';
 
-import calendarService from '../../calendar/_service';
+import calendarService from '../../screens/calendar/_service';
 
 interface Props extends IGenericCalendarInputProps {
   selectedMonth?: number;

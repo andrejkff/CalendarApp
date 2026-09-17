@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text, Button } from 'react-native';
 import { User } from '@react-native-firebase/auth';
 import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase';
+import { auth } from '../../../firebase';
 
 interface Props { user: User };
 

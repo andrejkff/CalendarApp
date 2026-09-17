@@ -9,10 +9,10 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { auth } from './firebase';
 
-import RegisterLoginComponent from './components/auth/RegisterLogin';
-import CalendarComponent from './components/calendar/Calendar';
-import HeaderComponent from './components/header/Header';
-import ProfileComponent from './components/profile/Profile';
+import RegisterLoginComponent from './components/screens/auth/RegisterLogin';
+import CalendarComponent from './components/screens/calendar/Calendar';
+import HeaderComponent from './components/screens/header/Header';
+import ProfileComponent from './components/screens/profile/Profile';
 
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { useState, useEffect, useRef } from 'react';

@@ -9,8 +9,8 @@ import {
   updateDoc,
   doc,
 } from 'firebase/firestore';
-import { db } from '../../firebase';
-import { ICreateEventPayload, IEventView } from '../../types/api/event';
+import { db } from '../../../firebase';
+import { ICreateEventPayload, IEventView } from '../../../types/api/event';
 
 function maxDaysIn(month: number, year: number): number {
   return new Date(year, month + 1, 0).getDate();

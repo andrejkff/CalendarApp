@@ -1,7 +1,7 @@
 import { View, TextInput, StyleSheet, Button, Text } from 'react-native';
 import { User } from '@react-native-firebase/auth';
 
-import { IEventView } from '../../types/api/event';
+import { IEventView } from '../../../types/api/event';
 
 interface Props { user: User, selectedDate: Date, selectedHours: number };
 

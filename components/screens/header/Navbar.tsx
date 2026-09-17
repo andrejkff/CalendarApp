@@ -3,7 +3,7 @@ import { User } from '@react-native-firebase/auth';
 
 interface Props { onNavSelected: (location: string) => void, onClose: () => void, user: User | null };
 
-import { SCREEN_NAMES } from '../../constants/appNavigation';
+import { SCREEN_NAMES } from '../../../constants/appNavigation';
 
 export default function Navbar({
   onNavSelected,
