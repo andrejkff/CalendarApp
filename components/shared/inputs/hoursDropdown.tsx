@@ -19,6 +19,7 @@ export default function HoursDropdown({
         onValueChange={value => onSelected(Number(value))}
         mode="dropdown"
         style={styles.calendarDropdown}
+        testID="hours-picker"
       >
         {Array.from(
           { length: 24 },

@@ -52,6 +52,7 @@ export default function EmailInput({
         keyboardType="email-address"
         autoCapitalize="none"
         autoCorrect={false}
+        testID="email-input"
       />
       {error ? <ErrorComponent text={error} textSize="sm" additionalStyles={styles.error}/> : <></>}
     </View>

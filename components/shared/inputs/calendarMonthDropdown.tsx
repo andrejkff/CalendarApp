@@ -30,6 +30,7 @@ export default function CalendarMonthDropdown({
     <View style={styles.container}>
       <Text>Month</Text>
       <Picker
+        testID="month-picker"
         selectedValue={selectedMonth}
         onValueChange={(value) => onSelected(Number(value))}
         mode="dropdown"

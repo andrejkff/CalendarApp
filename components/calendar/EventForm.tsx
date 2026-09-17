@@ -74,6 +74,7 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
         onChangeText={setEventName}
         placeholder="Event name"
         style={styles.input}
+        testID="event-name-input"
       />
       <TextInput
         value={eventDescription}
@@ -82,11 +83,13 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
         numberOfLines={5}
         placeholder="Event details"
         style={[styles.input, styles.textarea]}
+        testID="event-details-input"
       />
       <Button
         title="Save event"
         onPress={() => selectedEvent ? updateEvent() : saveEvent()}
         disabled={loading}
+        testID="submit-event-button"
       />
     </View>
   );

@@ -54,6 +54,7 @@ export default function PasswordInput({
         secureTextEntry={true}
         autoCapitalize="none"
         autoCorrect={false}
+        testID="password-input"
       />
       {error ? <ErrorComponent text={error} textSize="sm" additionalStyles={styles.error}/> : <></>}
     </View>

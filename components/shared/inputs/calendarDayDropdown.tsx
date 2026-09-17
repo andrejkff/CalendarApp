@@ -33,6 +33,7 @@ export default function CalendarDayDropdown({
         onValueChange={value => onSelected(Number(value))}
         mode="dropdown"
         style={styles.calendarDropdown}
+        testID="day-picker"
       >
         {Array.from(
           { length: daysInMonth() },

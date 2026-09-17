@@ -25,6 +25,7 @@ export default function CalendarYearInput({
     <View style={styles.container}>
       <Text>Year</Text>
       <TextInput
+        testID="year-input"
         style={styles.calendarInput}
         value={value}
         onChangeText={handleChange}

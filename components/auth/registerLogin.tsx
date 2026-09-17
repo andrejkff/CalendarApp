@@ -48,7 +48,7 @@ export default function RegisterLogin() {
     return (
       <View style={styles.modeToggle}>
         <Text>Already have an account?</Text>
-        <Button title="Log in" onPress={() => changeMode('login')} />
+        <Button title="Log in" onPress={() => changeMode('login')} testID="switch-to-login-button" />
       </View>
     )
   };
@@ -57,7 +57,7 @@ export default function RegisterLogin() {
     return (
       <View style={styles.modeToggle}>
         <Text>Do not have an account?</Text>
-        <Button title="Register" onPress={() => changeMode('register')} />
+        <Button title="Register" onPress={() => changeMode('register')} testID="switch-to-register-button"/>
       </View>
     )
   };
@@ -88,6 +88,7 @@ export default function RegisterLogin() {
         title={mode === 'register' ? 'Sign up' : 'Log in'}
         disabled={submitDisabled()}
         onPress={submit}
+        testID="submit-auth-button"
       />
       {mode === 'register' ? switchToLoginUi() : switchToRegisterUi()}
       {error ? <ErrorComponent text={error} textSize="lg" /> : <></>}
