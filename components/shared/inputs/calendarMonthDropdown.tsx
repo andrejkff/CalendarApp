@@ -3,7 +3,9 @@ import { IGenericCalendarInputProps } from '../../../types/components/inputs';
 import { View, Text } from 'react-native';
 import { styles } from './_styles';
 
-interface Props extends IGenericCalendarInputProps {};
+interface Props extends IGenericCalendarInputProps {
+  selectedMonth?: number,
+};
 
 const monthsMap = [
   { name: 'January', index: 0 },
@@ -23,11 +25,10 @@ const monthsMap = [
 export default function CalendarMonthDropdown({
   onSelected,
   selectedMonth = new Date().getMonth(),
-  label,
 }: Props) {
   return (
     <View style={styles.container}>
-      {label ? <Text>{label}</Text> : <></>}
+      <Text>Month</Text>
       <Picker
         selectedValue={selectedMonth}
         onValueChange={(value) => onSelected(Number(value))}
