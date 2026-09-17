@@ -43,6 +43,7 @@ export default function PasswordInput({
   return (
     <View style={styles.container}>
       <TextInput
+        style={styles.textInput}
         onChangeText={(value) => {
           setPassword(value);
           onValueChange(value);

@@ -41,6 +41,7 @@ export default function EmailInput({
   return (
     <View style={styles.container}>
       <TextInput
+        style={styles.textInput}
         onChangeText={(value) => {
           setEmail(value);
           onValueChange(value);
