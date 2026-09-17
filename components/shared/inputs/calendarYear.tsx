@@ -13,7 +13,7 @@ export default function CalendarYearInput({
  }: Props) {
    const [value, setValue] = useState(selectedYear.toString());
 
-  const handleChange = (value: string) => {
+  function handleChange(value: string) {
     if (!value.length) return setValue(value);
     let valueNumeric = Number(value);
     if (!Number.isInteger(valueNumeric)) return setValue(value);

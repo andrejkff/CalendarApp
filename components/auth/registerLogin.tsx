@@ -19,11 +19,15 @@ export default function RegisterLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const formIsValid = (): boolean => Object.values(validityState).every(value => value === true);
+  function formIsValid (): boolean {
+    return Object.values(validityState).every(value => value === true);
+  }
 
-  const submitDisabled = (): boolean => loading || !formIsValid();
+  function submitDisabled(): boolean {
+    return loading || !formIsValid();
+  }
 
-  const submit = async () => {
+  async function submit() {
     if (loading) return;
     setLoading(true);
     setError('');

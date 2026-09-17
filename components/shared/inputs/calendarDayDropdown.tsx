@@ -17,10 +17,12 @@ export default function CalendarDayDropdown({
   selectedMonth = new Date().getMonth(),
   selectedYear = new Date().getFullYear(),
 }: Props) {
-  const daysInMonth = () => calendarService.maxDaysIn(
-    selectedMonth,
-    selectedYear
-  );
+  function daysInMonth(): number {
+    return calendarService.maxDaysIn(
+      selectedMonth,
+      selectedYear
+    );
+  }
 
   return (
     <View style={styles.container}>

@@ -15,7 +15,7 @@ export default function EmailInput({
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
 
-  const validateEmail = () => {
+  function validateEmail() {
     const value = email.trim();
 
     if (!value) {

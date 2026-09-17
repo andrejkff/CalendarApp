@@ -17,7 +17,7 @@ export default function PasswordInput({
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const validatePassword = () => {
+  function validatePassword() {
     const value = password.trim();
 
     if (!value) {
