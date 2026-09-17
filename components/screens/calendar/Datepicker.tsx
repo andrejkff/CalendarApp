@@ -1,6 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
 import calendarService from './_service';
+import { useWindowDimensions } from 'react-native';
 
 import CalendarDayDropdownComponent from '../../shared/inputs/calendarDayDropdown';
 import CalendarMonthDropdownComponent from '../../shared/inputs/calendarMonthDropdown';
@@ -17,10 +18,11 @@ export default function Datepicker({
   onHoursChanged,
 }: Props) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
     onDateChanged(selectedDate);
-  }, [selectedDate])
+  }, [selectedDate]);
 
   function selectYear(year: number) {
     setSelectedDate(previousDate => {
@@ -57,7 +59,7 @@ export default function Datepicker({
   }
 
   return (
-    <View style={styles.container}>
+    <View style={width < 500 ? styles.container : styles.containerRow}>
       <View style={styles.dateSelectWrapper}>
         <CalendarDayDropdownComponent
           onSelected={selectDate}
@@ -86,6 +88,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: 16,
+  },
+  containerRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 16,
+    justifyContent: 'space-around'
   },
   dateSelectWrapper: {
     display: 'flex',

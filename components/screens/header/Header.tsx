@@ -93,13 +93,22 @@ export default function Header({ onNavSelected, user }: Props) {
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    padding: 12,
-    justifyContent: 'center',
+    height: 64,
+    paddingHorizontal: 12,
+    paddingTop: 24,
     backgroundColor: '#d7d7d7',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
 
   title: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 24,
     textAlign: 'center',
+    fontSize: 18,
   },
 
   menuButton: {
