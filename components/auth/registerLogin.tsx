@@ -6,8 +6,10 @@ import { auth } from '../../firebase';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
+type Mode = 'register' | 'login';
+
 export default function RegisterLogin() {
-  const [mode, setMode] = useState<'register' | 'login'>('register');
+  const [mode, setMode] = useState<Mode>('register');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [validityState, setValidityState] = useState<{ password: boolean, email: boolean}>({
@@ -33,11 +35,16 @@ export default function RegisterLogin() {
     });
   };
 
+  function changeMode(mode: Mode) {
+    setError('');
+    setMode(mode);
+  }
+
   function switchToLoginUi() {
     return (
       <View style={styles.modeToggle}>
         <Text>Already have an account?</Text>
-        <Button title="Log in" onPress={() => setMode('login')} />
+        <Button title="Log in" onPress={() => changeMode('login')} />
       </View>
     )
   };
@@ -46,7 +53,7 @@ export default function RegisterLogin() {
     return (
       <View style={styles.modeToggle}>
         <Text>Do not have an account?</Text>
-        <Button title="Register" onPress={() => setMode('register')} />
+        <Button title="Register" onPress={() => changeMode('register')} />
       </View>
     )
   };
