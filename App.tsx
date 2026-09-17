@@ -28,7 +28,7 @@ function AppContent() {
   const [screen, setScreen] = useState<string>(SCREEN_NAMES.CALENDAR);
 
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     return onAuthStateChanged(auth, user => {
@@ -45,7 +45,7 @@ function AppContent() {
 
   return (
     <View style={styles.container}>
-      <HeaderComponent onNavSelected={setScreen}/>
+      <HeaderComponent onNavSelected={setScreen} user={user} />
       {screen === SCREEN_NAMES.AUTH && <RegisterLoginComponent />}
       {screen === SCREEN_NAMES.CALENDAR && <CalendarComponent user={user!} />}
       {screen === SCREEN_NAMES.PROFILE && <ProfileComponent user={user!} />}

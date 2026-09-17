@@ -1,23 +1,30 @@
 import { View, Button, StyleSheet } from 'react-native';
+import { User } from '@react-native-firebase/auth';
 
-interface Props { onNavSelected: (location: string) => void, onClose: () => void };
+interface Props { onNavSelected: (location: string) => void, onClose: () => void, user: User | null };
 
 import { SCREEN_NAMES } from '../../constants/appNavigation';
 
 export default function Navbar({
   onNavSelected,
   onClose,
+  user,
 }: Props) {
   return (
     <View style={styles.header}>
-      <Button
-        title="Calendar"
-        onPress={() => onNavSelected(SCREEN_NAMES.CALENDAR)}
-      />
-      <Button
-        title="Profile"
-        onPress={() => onNavSelected(SCREEN_NAMES.PROFILE)}
-      />
+      {
+        user !== null &&
+        <>
+          <Button
+            title="Calendar"
+            onPress={() => onNavSelected(SCREEN_NAMES.CALENDAR)}
+          />
+          <Button
+            title="Profile"
+            onPress={() => onNavSelected(SCREEN_NAMES.PROFILE)}
+          />
+        </>
+      }
       <Button
         title="Close"
         onPress={onClose}

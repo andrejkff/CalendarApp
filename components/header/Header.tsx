@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { User } from '@react-native-firebase/auth';
 
 import Navbar from './Navbar';
 
 import { useState } from 'react';
 
-interface Props { onNavSelected: (location: string) => void };
+interface Props { onNavSelected: (location: string) => void, user: User | null };
 
-export default function Header({ onNavSelected }: Props) {
+export default function Header({ onNavSelected, user }: Props) {
   const [navbarOpen, setNavbarOpen] = useState(false);
 
   return (
@@ -25,6 +26,7 @@ export default function Header({ onNavSelected }: Props) {
       {
         navbarOpen &&
         <Navbar
+          user={user}
           onClose={() => setNavbarOpen(false)}
           onNavSelected={(value) => {
             setNavbarOpen(false);
