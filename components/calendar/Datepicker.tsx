@@ -85,11 +85,12 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 32,
+    gap: 16,
   },
   dateSelectWrapper: {
     display: 'flex',
     flexDirection: 'row',
     gap: 16,
+    justifyContent: 'space-between',
   },
 });

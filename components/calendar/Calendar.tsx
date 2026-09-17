@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    gap: 24,
+    gap: 36,
     padding: 36,
   }
 })
