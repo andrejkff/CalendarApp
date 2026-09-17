@@ -11,7 +11,7 @@ export default function Navbar({
   user,
 }: Props) {
   return (
-    <View style={styles.header}>
+    <View style={styles.navbar}>
       {
         user !== null &&
         <>
@@ -34,17 +34,13 @@ export default function Navbar({
 };
 
 const styles = StyleSheet.create({
-  header: {
-    zIndex: 999,
-    position: 'absolute',
+  navbar: {
     width: 128,
-    padding: 12,
-    display: 'flex',
-    backgroundColor: 'rgba(215, 215, 215, .8)',
-    left: 0,
-    top: 64,
     height: '100%',
+    padding: 12,
+    backgroundColor: 'rgba(215, 215, 215, .8)',
     justifyContent: 'flex-start',
     gap: 8,
+    zIndex: 999,
   },
 });

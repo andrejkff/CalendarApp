@@ -1,64 +1,127 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Animated,
+} from 'react-native';
 import { User } from '@react-native-firebase/auth';
-
 import Navbar from './Navbar';
+import { useRef, useState } from 'react';
 
-import { useState } from 'react';
-
-interface Props { onNavSelected: (location: string) => void, user: User | null };
+interface Props {
+  onNavSelected: (location: string) => void;
+  user: User | null;
+}
 
 export default function Header({ onNavSelected, user }: Props) {
   const [navbarOpen, setNavbarOpen] = useState(false);
+
+  const animation = useRef(new Animated.Value(0)).current;
+
+  function openNavbar() {
+    setNavbarOpen(true);
+
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+  }
+
+  function closeNavbar(callback?: () => void) {
+    Animated.timing(animation, {
+      toValue: 0,
+      duration: 250,
+      useNativeDriver: true,
+    }).start(() => {
+      setNavbarOpen(false);
+      callback?.();
+    });
+  }
 
   return (
     <>
       <View style={styles.header}>
         <Text style={styles.title}>Calendar</Text>
+
         <Pressable
           style={styles.menuButton}
-          onPress={() => setNavbarOpen(navbarOpen => !navbarOpen)}
+          onPress={() => {
+            if (navbarOpen) {
+              closeNavbar();
+            } else {
+              openNavbar();
+            }
+          }}
         >
           <View style={styles.menuLine} />
           <View style={styles.menuLine} />
           <View style={styles.menuLine} />
         </Pressable>
       </View>
-      {
-        navbarOpen &&
-        <Navbar
-          user={user}
-          onClose={() => setNavbarOpen(false)}
-          onNavSelected={(value) => {
-            setNavbarOpen(false);
-            onNavSelected(value);
-          }}
-        />
-      }
+
+      {navbarOpen && (
+        <Animated.View
+          style={[
+            styles.navbar,
+            {
+              transform: [
+                {
+                  translateX: animation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [-128, 0],
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
+          <Navbar
+            user={user}
+            onClose={() => closeNavbar()}
+            onNavSelected={(value) => {
+              closeNavbar(() => onNavSelected(value));
+            }}
+          />
+        </Animated.View>
+      )}
     </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   header: {
     width: '100%',
     padding: 12,
-    display: 'flex',
     justifyContent: 'center',
-    backgroundColor: '#d7d7d7'
+    backgroundColor: '#d7d7d7',
   },
+
   title: {
     textAlign: 'center',
-    },
+  },
+
   menuButton: {
     width: 44,
     height: 44,
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   menuLine: {
     width: 24,
     height: 2,
     marginVertical: 2,
     backgroundColor: '#222',
+  },
+
+  navbar: {
+    position: 'absolute',
+    top: 64,
+    left: 0,
+    bottom: 0,
+    width: 128,
+    zIndex: 999,
   },
 });
