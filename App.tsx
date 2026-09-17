@@ -1,7 +1,11 @@
-import { StatusBar, StyleSheet, useColorScheme, View, Text } from 'react-native';
 import {
-  SafeAreaProvider,
-} from 'react-native-safe-area-context';
+  StatusBar,
+  StyleSheet,
+  useColorScheme,
+  View,
+  Animated,
+} from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { auth } from './firebase';
 
 import RegisterLoginComponent from './components/auth/registerLogin';
@@ -10,7 +14,7 @@ import HeaderComponent from './components/header/Header';
 import ProfileComponent from './components/profile/Profile';
 
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { SCREEN_NAMES } from './constants/appNavigation';
 
 function App() {
@@ -18,43 +22,98 @@ function App() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+      />
       <AppContent />
     </SafeAreaProvider>
   );
 }
 
 function AppContent() {
-  const [screen, setScreen] = useState<string>(SCREEN_NAMES.CALENDAR);
+  const [screen, setScreen] = useState<string>(
+    SCREEN_NAMES.CALENDAR
+  );
 
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
+
+  const opacity = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     return onAuthStateChanged(auth, user => {
       setUser(user);
       setLoading(false);
-      if (!user)
-        setScreen(SCREEN_NAMES.AUTH)
-      else
+
+      if (!user) {
+        setScreen(SCREEN_NAMES.AUTH);
+      } else {
         setScreen(SCREEN_NAMES.CALENDAR);
+      }
     });
   }, []);
 
-  if (loading) return null;
+  function changeScreen(newScreen: string) {
+    if (newScreen === screen) {
+      return;
+    }
+
+    Animated.timing(opacity, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: true,
+    }).start(() => {
+      setScreen(newScreen);
+
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 150,
+        useNativeDriver: true,
+      }).start();
+    });
+  }
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
-      <HeaderComponent onNavSelected={setScreen} user={user} />
-      {screen === SCREEN_NAMES.AUTH && <RegisterLoginComponent />}
-      {screen === SCREEN_NAMES.CALENDAR && <CalendarComponent user={user!} />}
-      {screen === SCREEN_NAMES.PROFILE && <ProfileComponent user={user!} />}
+      <HeaderComponent
+        onNavSelected={changeScreen}
+        user={user}
+      />
+
+      <Animated.View
+        style={[
+          styles.screen,
+          {
+            opacity,
+          },
+        ]}
+      >
+        {screen === SCREEN_NAMES.AUTH && (
+          <RegisterLoginComponent />
+        )}
+
+        {screen === SCREEN_NAMES.CALENDAR && (
+          <CalendarComponent user={user!} />
+        )}
+
+        {screen === SCREEN_NAMES.PROFILE && (
+          <ProfileComponent user={user!} />
+        )}
+      </Animated.View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+
+  screen: {
     flex: 1,
   },
 });
