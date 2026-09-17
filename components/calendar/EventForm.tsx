@@ -13,8 +13,10 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
   const [eventDescription, setEventDescription] = useState('');
   const [newEventSaved, setNewEventSaved] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<IEventView | null>(null);
+  const [loading, setLoading] = useState(false);
 
   async function searchEvents() {
+    setLoading(true);
     setNewEventSaved(false);
     const result = await calendarService.getEvents(
       user.uid,
@@ -23,6 +25,7 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
       selectedDate.getFullYear(),
       selectedHours,
     );
+    setLoading(false);
     if (!result?.length) {
       setSelectedEvent(null);
       setEventName('');
@@ -35,6 +38,7 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
   };
 
   async function saveEvent() {
+    setLoading(true);
     await calendarService.saveEvent({
       name: eventName,
       description: eventDescription,
@@ -44,19 +48,26 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
       startHours: selectedHours,
     }, user);
     setNewEventSaved(true);
+    setLoading(false);
   };
 
   async function updateEvent() {
+    setLoading(true);
     await calendarService.updateEvent(selectedEvent!.id, {
       ...selectedEvent!,
       name: eventName,
       description: eventDescription,
     });
+    setLoading(false);
   }
 
   return (
     <View style={styles.container}>
-      <Button title="Search events" onPress={searchEvents}/>
+      <Button
+        title="Search events"
+        onPress={searchEvents}
+        disabled={loading}
+      />
       {!selectedEvent && !newEventSaved ? <Text>No event saved in this time slot</Text> : <Text>Event details:</Text>}
       <TextInput
         value={eventName}
@@ -75,6 +86,7 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
       <Button
         title="Save event"
         onPress={() => selectedEvent ? updateEvent() : saveEvent()}
+        disabled={loading}
       />
     </View>
   );
