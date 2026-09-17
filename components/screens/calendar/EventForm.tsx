@@ -68,29 +68,39 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
         onPress={searchEvents}
         disabled={loading}
       />
-      {!selectedEvent && !newEventSaved ? <Text>No event saved in this time slot</Text> : <Text>Event details:</Text>}
-      <TextInput
-        value={eventName}
-        onChangeText={setEventName}
-        placeholder="Event name"
-        style={styles.input}
-        testID="event-name-input"
-      />
-      <TextInput
-        value={eventDescription}
-        onChangeText={setEventDescription}
-        multiline
-        numberOfLines={5}
-        placeholder="Event details"
-        style={[styles.input, styles.textarea]}
-        testID="event-details-input"
-      />
-      <Button
-        title="Save event"
-        onPress={() => selectedEvent ? updateEvent() : saveEvent()}
-        disabled={loading}
-        testID="submit-event-button"
-      />
+      <View style={styles.containerInner}>
+        <Text style={styles.resultsLabel}>
+          {
+            !selectedEvent && !newEventSaved
+            ? 'No event saved in this time slot'
+            : 'Event details:'
+          }
+        </Text>
+        <View style={styles.formFieldsWrapper}>
+          <TextInput
+            value={eventName}
+            onChangeText={setEventName}
+            placeholder="Event name"
+            style={styles.input}
+            testID="event-name-input"
+          />
+          <TextInput
+            value={eventDescription}
+            onChangeText={setEventDescription}
+            multiline
+            numberOfLines={5}
+            placeholder="Event details"
+            style={[styles.input, styles.textarea]}
+            testID="event-details-input"
+          />
+        </View>
+        <Button
+          title="Save event"
+          onPress={() => selectedEvent ? updateEvent() : saveEvent()}
+          disabled={loading}
+          testID="submit-event-button"
+        />
+      </View>
     </View>
   );
 };
@@ -99,12 +109,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: 'flex',
+    gap: 32,
+  },
+  containerInner: {
+    display: 'flex',
+    gap: 12,
+  },
+  formFieldsWrapper: {
+    display: 'flex',
     gap: 4,
+  },
+  resultsLabel: {
+    fontSize: 16,
+    fontWeight: 'bold'
   },
   input: {
     backgroundColor: '#d7d7d7',
   },
   textarea: {
     height: 64,
+  },
+  searchButton: {
+    marginBottom: 32,
   },
 })
