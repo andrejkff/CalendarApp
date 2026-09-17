@@ -68,20 +68,20 @@ export default function RegisterLogin() {
         <EmailInputComponent
           label="Email"
           onValueChange={setEmail}
-          onValidityChange={(newValidity: boolean) => setValidityState({
-            ...validityState,
+          onValidityChange={(newValidity: boolean) => setValidityState(state => ({
+            ...state,
             email: newValidity,
-          })}
+          }))}
         />
       </View>
       <View style={styles.inputGroup}>
         <PasswordInputComponent
           label="Password"
           onValueChange={setPassword}
-          onValidityChange={(newValidity: boolean) => setValidityState({
-            ...validityState,
+          onValidityChange={(newValidity: boolean) => setValidityState(state => ({
+            ...state,
             password: newValidity,
-          })}
+          }))}
         />
       </View>
       <Button
