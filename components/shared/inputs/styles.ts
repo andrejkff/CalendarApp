@@ -7,4 +7,7 @@ export const styles = StyleSheet.create({
     gap: 2,
     height: 52,
   },
+  error: {
+    paddingLeft: 4,
+  }
 });

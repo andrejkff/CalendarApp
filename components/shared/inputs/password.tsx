@@ -52,7 +52,7 @@ export default function PasswordInput({
         autoCapitalize="none"
         autoCorrect={false}
       />
-      {error ? <ErrorComponent text={error} textSize="sm" additionalStyles={{ paddingLeft: 4 }}/> : <></>}
+      {error ? <ErrorComponent text={error} textSize="sm" additionalStyles={styles.error}/> : <></>}
     </View>
   );
 };
