@@ -5,6 +5,7 @@ import {
 import { auth } from './firebase';
 
 import RegisterLoginComponent from './components/auth/registerLogin';
+import CalendarComponent from './components/calendar/Calendar';
 
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { useState, useEffect } from 'react';
@@ -43,7 +44,7 @@ function AppContent() {
   return (
     <View style={styles.container}>
       {screen === SCREEN_NAMES.AUTH && <RegisterLoginComponent />}
-      {screen === SCREEN_NAMES.CALENDAR && <Text style={{ fontSize: 80 }}>Calendar</Text>}
+      {screen === SCREEN_NAMES.CALENDAR && <CalendarComponent user={user!} />}
     </View>
   );
 }

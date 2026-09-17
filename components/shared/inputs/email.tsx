@@ -2,7 +2,7 @@ import { View, TextInput } from 'react-native';
 import { useState, useEffect } from 'react';
 
 import { IGenericInputProps } from '../../../types/components/inputs';
-import { styles } from './styles';
+import { styles } from './_styles';
 
 import ErrorComponent from '../error';
 
