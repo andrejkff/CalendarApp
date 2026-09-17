@@ -5,7 +5,7 @@ import {
 import { auth } from './firebase';
 
 import RegisterLoginComponent from './components/auth/registerLogin';
-import CalendarComponent from './components/calendar/Datepicker';
+import CalendarComponent from './components/calendar/Calendar';
 
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { useState, useEffect } from 'react';

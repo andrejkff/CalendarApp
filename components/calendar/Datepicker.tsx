@@ -1,16 +1,23 @@
-import { User } from '@react-native-firebase/auth';
-import { View, Text, StyleSheet } from 'react-native';
-import { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { useState, useEffect } from 'react';
 import calendarService from './_service';
 
 import CalendarDayDropdownComponent from '../shared/inputs/calendarDayDropdown';
 import CalendarMonthDropdownComponent from '../shared/inputs/calendarMonthDropdown';
 import CalendarYearInputComponent from '../shared/inputs/calendarYear';
 
-type Props = { user: User };
+interface Props {
+  onDateChanged: (newDate: Date) => void;
+}
 
-export default function Datepicker({ user }: Props) {
+export default function Datepicker({
+  onDateChanged,
+}: Props) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
+  useEffect(() => {
+    onDateChanged(selectedDate);
+  }, [selectedDate])
 
   function selectYear(year: number) {
     setSelectedDate(previousDate => {
@@ -73,8 +80,6 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    gap: 24,
-    padding: 36,
   },
   dateSelectWrapper: {
     display: 'flex',
