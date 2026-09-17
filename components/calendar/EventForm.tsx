@@ -11,8 +11,10 @@ import calendarService from './_service';
 export default function EventForm({ user, selectedDate, selectedHours, selectedEvent }: Props) {
   const [eventName, setEventName] = useState('');
   const [eventDescription, setEventDescription] = useState('');
+  const [newEventSaved, setNewEventSaved] = useState(false);
 
   useEffect(() => {
+    setNewEventSaved(false);
     if (!selectedEvent) {
     setEventName('');
     setEventDescription('');
@@ -31,6 +33,7 @@ export default function EventForm({ user, selectedDate, selectedHours, selectedE
       startYear: selectedDate.getFullYear(),
       startHours: selectedHours,
     }, user);
+    setNewEventSaved(true);
   };
 
   async function updateEvent() {
@@ -43,7 +46,7 @@ export default function EventForm({ user, selectedDate, selectedHours, selectedE
 
   return (
     <View style={styles.container}>
-      {!selectedEvent ? <Text>No event saved in this time slot</Text> : <Text>Event details:</Text>}
+      {!selectedEvent && !newEventSaved ? <Text>No event saved in this time slot</Text> : <Text>Event details:</Text>}
       <TextInput
         value={eventName}
         onChangeText={setEventName}

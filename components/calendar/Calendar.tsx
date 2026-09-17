@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import { User } from '@react-native-firebase/auth';
 
 import DatepickerComponent from './Datepicker';
@@ -30,7 +30,6 @@ export default function Calendar({ user }: Props) {
 
   return (
     <View style={styles.container}>
-      <Text>{selectedDate.getDate() + ' ' + selectedDate.getMonth() + ' ' + selectedDate.getFullYear()}</Text>
       <DatepickerComponent
         onDateChanged={setSelectedDate}
       />

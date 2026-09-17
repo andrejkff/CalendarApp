@@ -77,7 +77,6 @@ export default function Datepicker({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     display: 'flex',
     flexDirection: 'column',
   },
