@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
     gap: 32,
   },
   dateSelectWrapper: {
-    flex: 1,
     display: 'flex',
     flexDirection: 'row',
     gap: 16,
