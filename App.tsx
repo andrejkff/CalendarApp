@@ -6,6 +6,7 @@ import { auth } from './firebase';
 
 import RegisterLoginComponent from './components/auth/registerLogin';
 import CalendarComponent from './components/calendar/Calendar';
+import HeaderComponent from './components/header/Header';
 
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { useState, useEffect } from 'react';
@@ -43,6 +44,7 @@ function AppContent() {
 
   return (
     <View style={styles.container}>
+      <HeaderComponent onNavSelected={setScreen}/>
       {screen === SCREEN_NAMES.AUTH && <RegisterLoginComponent />}
       {screen === SCREEN_NAMES.CALENDAR && <CalendarComponent user={user!} />}
     </View>
