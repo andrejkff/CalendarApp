@@ -13,22 +13,16 @@ export default function Calendar({ user }: Props) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   function selectYear(year: number) {
-    const _selectedDate = new Date(selectedDate);
-    const day = _selectedDate.getDate();
-    const month = _selectedDate.getMonth();
+    setSelectedDate(previousDate => {
+      const month = previousDate.getMonth();
+      const day = previousDate.getDate();
 
-    _selectedDate.setDate(1);
-    _selectedDate.setFullYear(year);
+      const maxDay = calendarService.maxDaysIn(month, year);
+      const safeDay = Math.min(day, maxDay);
 
-    const maxDay = calendarService.maxDaysIn(
-      month,
-      year
-    );
-
-    _selectedDate.setDate(Math.min(day, maxDay));
-
-    setSelectedDate(_selectedDate);
-  };
+      return new Date(year, month, safeDay);
+    });
+  }
 
   function selectMonth(month: number) {
     setSelectedDate(previousDate => {
@@ -38,15 +32,18 @@ export default function Calendar({ user }: Props) {
       const maxDay = calendarService.maxDaysIn(month, year);
       const safeDay = Math.min(day, maxDay);
 
-      const newDate = new Date(year, month, safeDay);
-
-      return newDate;
+      return new Date(year, month, safeDay);
     });
   }
+
   function selectDate(date: number) {
-    const _selectedDate = new Date(selectedDate);
-    _selectedDate.setDate(date);
-    setSelectedDate(_selectedDate);
+    setSelectedDate(previousDate => {
+      return new Date(
+        previousDate.getFullYear(),
+        previousDate.getMonth(),
+        date
+      );
+    });
   }
 
   return (
