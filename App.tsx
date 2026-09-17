@@ -4,6 +4,7 @@ import {
   useColorScheme,
   View,
   Animated,
+  ScrollView,
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { auth } from './firebase';
@@ -92,17 +93,21 @@ function AppContent() {
           },
         ]}
       >
-        {screen === SCREEN_NAMES.AUTH && (
-          <RegisterLoginComponent />
-        )}
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+        >
+          {screen === SCREEN_NAMES.AUTH && (
+            <RegisterLoginComponent />
+          )}
 
-        {screen === SCREEN_NAMES.CALENDAR && (
-          <CalendarComponent user={user!} />
-        )}
+          {screen === SCREEN_NAMES.CALENDAR && (
+            <CalendarComponent user={user!} />
+          )}
 
-        {screen === SCREEN_NAMES.PROFILE && (
-          <ProfileComponent user={user!} />
-        )}
+          {screen === SCREEN_NAMES.PROFILE && (
+            <ProfileComponent user={user!} />
+          )}
+        </ScrollView>
       </Animated.View>
     </View>
   );
@@ -115,6 +120,10 @@ const styles = StyleSheet.create({
 
   screen: {
     flex: 1,
+  },
+
+  scrollContent: {
+    flexGrow: 1,
   },
 });
 
