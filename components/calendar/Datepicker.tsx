@@ -9,7 +9,7 @@ import CalendarYearInputComponent from '../shared/inputs/calendarYear';
 
 type Props = { user: User };
 
-export default function Calendar({ user }: Props) {
+export default function Datepicker({ user }: Props) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   function selectYear(year: number) {
