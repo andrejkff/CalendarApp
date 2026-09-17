@@ -1,4 +1,4 @@
-import { View, TextInput } from 'react-native';
+import { View, TextInput, Text } from 'react-native';
 import { useState, useEffect } from 'react';
 
 import { IGenericInputProps } from '../../../types/components/inputs';
@@ -13,6 +13,7 @@ interface Props extends IGenericInputProps {};
 export default function PasswordInput({
   onValueChange,
   onValidityChange,
+  label,
 }: Props) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -42,6 +43,7 @@ export default function PasswordInput({
 
   return (
     <View style={styles.container}>
+      {label ? <Text>{label}</Text> : <></>}
       <TextInput
         style={styles.textInput}
         onChangeText={(value) => {

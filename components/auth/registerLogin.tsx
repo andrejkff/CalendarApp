@@ -65,8 +65,8 @@ export default function RegisterLogin() {
   return (
     <View style={styles.container}>
       <View style={styles.inputGroup}>
-        <Text>Email</Text>
         <EmailInputComponent
+          label="Email"
           onValueChange={setEmail}
           onValidityChange={(newValidity: boolean) => setValidityState({
             ...validityState,
@@ -75,8 +75,8 @@ export default function RegisterLogin() {
         />
       </View>
       <View style={styles.inputGroup}>
-        <Text>Password</Text>
         <PasswordInputComponent
+          label="Password"
           onValueChange={setPassword}
           onValidityChange={(newValidity: boolean) => setValidityState({
             ...validityState,
