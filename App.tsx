@@ -9,7 +9,7 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { auth } from './firebase';
 
-import RegisterLoginComponent from './components/auth/registerLogin';
+import RegisterLoginComponent from './components/auth/RegisterLogin';
 import CalendarComponent from './components/calendar/Calendar';
 import HeaderComponent from './components/header/Header';
 import ProfileComponent from './components/profile/Profile';
