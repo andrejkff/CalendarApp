@@ -1,7 +1,12 @@
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { View, TextInput } from 'react-native';
 import { useState, useEffect } from 'react';
 
 import { IGenericInputProps } from '../../types/components/inputs';
+import { styles } from './styles';
+
+import ErrorComponent from '../shared/error';
+
+import { PASSWORD_MIN_LENGTH } from '../../constants/auth';
 
 interface Props extends IGenericInputProps {};
 
@@ -17,6 +22,12 @@ export default function PasswordInput({
 
     if (!value) {
       setError('Password is required');
+      onValidityChange(false);
+      return;
+    }
+
+    if (value.length < PASSWORD_MIN_LENGTH) {
+      setError(`Password has to be at least ${PASSWORD_MIN_LENGTH} characters long`);
       onValidityChange(false);
       return;
     }
@@ -41,20 +52,7 @@ export default function PasswordInput({
         autoCapitalize="none"
         autoCorrect={false}
       />
-      {error ? <Text style={styles.errorLabel}>{error}</Text> : <></>}
+      {error ? <ErrorComponent text={error} textSize="sm" additionalStyles={{ paddingLeft: 4 }}/> : <></>}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 4,
-    height: 64,
-  },
-  errorLabel: {
-    paddingLeft: 4,
-    color: 'red',
-  }
-});

@@ -1,7 +1,10 @@
-import { StyleSheet, View, Text, TextInput } from 'react-native';
+import { View, TextInput } from 'react-native';
 import { useState, useEffect } from 'react';
 
 import { IGenericInputProps } from '../../types/components/inputs';
+import { styles } from './styles';
+
+import ErrorComponent from '../shared/error';
 
 interface Props extends IGenericInputProps {};
 
@@ -47,20 +50,7 @@ export default function EmailInput({
         autoCapitalize="none"
         autoCorrect={false}
       />
-      {error ? <Text style={styles.errorLabel}>{error}</Text> : <></>}
+      {error ? <ErrorComponent text={error} textSize="sm" additionalStyles={{ paddingLeft: 4 }}/> : <></>}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 4,
-    height: 64,
-  },
-  errorLabel: {
-    paddingLeft: 4,
-    color: 'red',
-  }
-});

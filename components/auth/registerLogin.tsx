@@ -1,6 +1,7 @@
 import { StyleSheet, View, Button, Text } from 'react-native';
-import EmailInput from '../inputs/email';
-import PasswordInput from '../inputs/password';
+import EmailInputComponent from '../inputs/email';
+import PasswordInputComponent from '../inputs/password';
+import ErrorComponent from '../shared/error';
 import { auth } from '../../firebase';
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
@@ -23,6 +24,7 @@ export default function RegisterLogin() {
   const submit = async () => {
     if (loading) return;
     setLoading(true);
+    setError('');
     const actionFn = mode === 'register' ? createUserWithEmailAndPassword : signInWithEmailAndPassword;
     actionFn(auth, email, password)
     .catch(error => {
@@ -51,27 +53,33 @@ export default function RegisterLogin() {
 
   return (
     <View style={styles.container}>
-      <EmailInput
-        onValueChange={setEmail}
-        onValidityChange={(newValidity: boolean) => setValidityState({
-          ...validityState,
-          email: newValidity,
-        })}
-      />
-      <PasswordInput
-        onValueChange={setPassword}
-        onValidityChange={(newValidity: boolean) => setValidityState({
-          ...validityState,
-          password: newValidity,
-        })}
-      />
+      <View style={styles.inputGroup}>
+        <Text>Email</Text>
+        <EmailInputComponent
+          onValueChange={setEmail}
+          onValidityChange={(newValidity: boolean) => setValidityState({
+            ...validityState,
+            email: newValidity,
+          })}
+        />
+      </View>
+      <View style={styles.inputGroup}>
+        <Text>Password</Text>
+        <PasswordInputComponent
+          onValueChange={setPassword}
+          onValidityChange={(newValidity: boolean) => setValidityState({
+            ...validityState,
+            password: newValidity,
+          })}
+        />
+      </View>
       <Button
         title={mode === 'register' ? 'Sign up' : 'Log in'}
         disabled={submitDisabled()}
         onPress={submit}
       />
       {mode === 'register' ? switchToLoginUi() : switchToRegisterUi()}
-      {error ? <Text>{error}</Text> : <></>}
+      {error ? <ErrorComponent text={error} textSize="lg" /> : <></>}
     </View>
   );
 };
@@ -83,9 +91,14 @@ const styles = StyleSheet.create({
     gap: 24,
     padding: 24,
   },
+  inputGroup: {
+    display: 'flex',
+    gap: 2,
+  },
   modeToggle: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
+    alignItems: 'baseline',
     gap: 8,
   }
 });
