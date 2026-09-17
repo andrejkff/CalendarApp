@@ -26,7 +26,10 @@ export default function Header({ onNavSelected }: Props) {
         navbarOpen &&
         <Navbar
           onClose={() => setNavbarOpen(false)}
-          onNavSelected={onNavSelected}
+          onNavSelected={(value) => {
+            setNavbarOpen(false);
+            onNavSelected(value);
+          }}
         />
       }
     </>
