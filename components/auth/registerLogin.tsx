@@ -63,7 +63,7 @@ export default function RegisterLogin() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="register-screen">
       <View style={styles.inputGroup}>
         <EmailInputComponent
           label="Email"

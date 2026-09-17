@@ -13,7 +13,7 @@ export default function Calendar({ user }: Props) {
   const [selectedHours, setSelectedHours] = useState<number>(12);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="calendar-screen">
       <DatepickerComponent
         onDateChanged={setSelectedDate}
         onHoursChanged={setSelectedHours}
