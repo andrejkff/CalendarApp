@@ -1,10 +1,10 @@
 import { View, TextInput } from 'react-native';
 import { useState, useEffect } from 'react';
 
-import { IGenericInputProps } from '../../types/components/inputs';
+import { IGenericInputProps } from '../../../types/components/inputs';
 import { styles } from './styles';
 
-import ErrorComponent from '../shared/error';
+import ErrorComponent from '../error';
 
 interface Props extends IGenericInputProps {};
 
