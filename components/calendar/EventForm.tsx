@@ -3,26 +3,36 @@ import { User } from '@react-native-firebase/auth';
 
 import { IEventView } from '../../types/api/event';
 
-interface Props { user: User, selectedDate: Date, selectedHours: number, selectedEvent?: IEventView | null };
+interface Props { user: User, selectedDate: Date, selectedHours: number };
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import calendarService from './_service';
 
-export default function EventForm({ user, selectedDate, selectedHours, selectedEvent }: Props) {
+export default function EventForm({ user, selectedDate, selectedHours }: Props) {
   const [eventName, setEventName] = useState('');
   const [eventDescription, setEventDescription] = useState('');
   const [newEventSaved, setNewEventSaved] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<IEventView | null>(null);
 
-  useEffect(() => {
+  async function searchEvents() {
     setNewEventSaved(false);
-    if (!selectedEvent) {
-    setEventName('');
-    setEventDescription('');
+    const result = await calendarService.getEvents(
+      user.uid,
+      selectedDate.getDate(),
+      selectedDate.getMonth(),
+      selectedDate.getFullYear(),
+      selectedHours,
+    );
+    if (!result?.length) {
+      setSelectedEvent(null);
+      setEventName('');
+      setEventDescription('');
       return;
     }
-    setEventName(selectedEvent.name);
-    setEventDescription(selectedEvent.description);
-  }, [selectedEvent]);
+    setSelectedEvent(result[0]);
+    setEventName(result[0].name);
+    setEventDescription(result[0].description);
+  };
 
   async function saveEvent() {
     await calendarService.saveEvent({
@@ -46,6 +56,7 @@ export default function EventForm({ user, selectedDate, selectedHours, selectedE
 
   return (
     <View style={styles.container}>
+      <Button title="Search events" onPress={searchEvents}/>
       {!selectedEvent && !newEventSaved ? <Text>No event saved in this time slot</Text> : <Text>Event details:</Text>}
       <TextInput
         value={eventName}
