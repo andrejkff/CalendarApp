@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: 2,
-    height: 52,
+    height: 64,
   },
   textInput: {
     backgroundColor: '#dbdbdb',
@@ -20,10 +20,11 @@ export const styles = StyleSheet.create({
     padding: 12,
     height: 56,
     fontSize: 16,
+    width: 120,
   },
   calendarDropdown: {
     backgroundColor: calendarInputBackgroundColor,
-    width: 100,
+    width: 120,
     height: 56,
   },
 });

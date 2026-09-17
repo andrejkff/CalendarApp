@@ -2,7 +2,6 @@ import { View, StyleSheet } from 'react-native';
 import { User } from '@react-native-firebase/auth';
 
 import DatepickerComponent from './Datepicker';
-import HoursDropdownComponent from '../shared/inputs/hoursDropdown';
 import EventForm from './EventForm';
 
 import { useState } from 'react';
@@ -17,8 +16,8 @@ export default function Calendar({ user }: Props) {
     <View style={styles.container}>
       <DatepickerComponent
         onDateChanged={setSelectedDate}
+        onHoursChanged={setSelectedHours}
       />
-      <HoursDropdownComponent onSelected={setSelectedHours} />
       <EventForm user={user} selectedDate={selectedDate} selectedHours={selectedHours} />
     </View>
   );

@@ -5,13 +5,16 @@ import calendarService from './_service';
 import CalendarDayDropdownComponent from '../shared/inputs/calendarDayDropdown';
 import CalendarMonthDropdownComponent from '../shared/inputs/calendarMonthDropdown';
 import CalendarYearInputComponent from '../shared/inputs/calendarYear';
+import HoursDropdownComponent from '../shared/inputs/hoursDropdown';
 
 interface Props {
   onDateChanged: (newDate: Date) => void;
+  onHoursChanged: (newHours: number) => void;
 }
 
 export default function Datepicker({
   onDateChanged,
+  onHoursChanged,
 }: Props) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
@@ -66,10 +69,13 @@ export default function Datepicker({
           onSelected={selectMonth}
           selectedMonth={selectedDate.getMonth()}
         />
+      </View>
+      <View style={styles.dateSelectWrapper}>
         <CalendarYearInputComponent
           onSelected={selectYear}
           selectedYear={selectedDate.getFullYear()}
         />
+        <HoursDropdownComponent onSelected={onHoursChanged} />
       </View>
     </View>
   )
@@ -79,8 +85,10 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
+    gap: 32,
   },
   dateSelectWrapper: {
+    flex: 1,
     display: 'flex',
     flexDirection: 'row',
     gap: 16,
