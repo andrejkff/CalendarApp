@@ -14,9 +14,10 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
   const [newEventSaved, setNewEventSaved] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<IEventView | null>(null);
   const [loading, setLoading] = useState(false);
+  const [searching, setSearching] = useState(false);
 
   async function searchEvents() {
-    setLoading(true);
+    setSearching(true);
     setNewEventSaved(false);
     const result = await calendarService.getEvents(
       user.uid,
@@ -25,7 +26,7 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
       selectedDate.getFullYear(),
       selectedHours,
     );
-    setLoading(false);
+    setSearching(false);
     if (!result?.length) {
       setSelectedEvent(null);
       setEventName('');
@@ -61,28 +62,36 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
     setLoading(false);
   }
 
+  function renderEventTimeUi() {
+    if (!selectedEvent && !newEventSaved) return <></>;
+    const startDate = selectedEvent?.startDate || selectedDate.getDate();
+    const startMonth = selectedEvent?.startMonth !== undefined ? selectedEvent.startMonth : selectedDate.getMonth();
+    const startYear = selectedEvent?.startYear || selectedDate.getFullYear();
+    const startHours = selectedEvent?.startHours || selectedHours;
+    return (
+      <Text>
+        {startDate}/{startMonth + 1}/{startYear}, {startHours}:00
+      </Text>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Button
         title="Search events"
         onPress={searchEvents}
-        disabled={loading}
+        disabled={loading || searching}
       />
       <View style={styles.containerInner}>
         <Text style={styles.resultsLabel}>
-          { loading ?
+          { searching ?
             'Searching...'
             : !selectedEvent && !newEventSaved
             ? 'No event saved in this time slot'
             : 'Event details:'
           }
         </Text>
-        {
-          !!selectedEvent &&
-          <Text>
-            {selectedEvent.startDate}/{selectedEvent.startMonth + 1}/{selectedEvent.startYear}, {selectedEvent.startHours}:00
-          </Text>
-        }
+        {renderEventTimeUi()}
         <View style={styles.formFieldsWrapper}>
           <TextInput
             value={eventName}
@@ -104,7 +113,7 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
         <Button
           title="Save event"
           onPress={() => selectedEvent ? updateEvent() : saveEvent()}
-          disabled={loading}
+          disabled={loading || searching}
           testID="submit-event-button"
         />
       </View>
