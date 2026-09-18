@@ -48,6 +48,7 @@ export default function EventForm({
     }, user);
     setNewEventSaved(true);
     setLoading(false);
+    onClose();
   };
 
   async function updateEvent() {
