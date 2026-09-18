@@ -1,31 +1,20 @@
 import { View, StyleSheet } from 'react-native';
-import { useState, useEffect } from 'react';
 import calendarService from './_service';
-import { useWindowDimensions } from 'react-native';
 
 import CalendarDayDropdownComponent from '../../shared/inputs/calendarDayDropdown';
 import CalendarMonthDropdownComponent from '../../shared/inputs/calendarMonthDropdown';
 import CalendarYearDropdownComponent from '../../shared/inputs/calendarYearDropdown';
-import HoursDropdownComponent from '../../shared/inputs/hoursDropdown';
 
 interface Props {
-  onDateChanged: (newDate: Date) => void;
-  onHoursChanged: (newHours: number) => void;
+  selectedDate: Date,
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
 }
 
 export default function Datepicker({
-  onDateChanged,
-  onHoursChanged,
+  selectedDate, setSelectedDate,
 }: Props) {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const { width } = useWindowDimensions();
-
-  useEffect(() => {
-    onDateChanged(selectedDate);
-  }, [selectedDate]);
-
   function selectYear(year: number) {
-    setSelectedDate(previousDate => {
+    setSelectedDate((previousDate: Date): Date => {
       const month = previousDate.getMonth();
       const day = previousDate.getDate();
 
@@ -37,7 +26,7 @@ export default function Datepicker({
   }
 
   function selectMonth(month: number) {
-    setSelectedDate(previousDate => {
+    setSelectedDate((previousDate: Date): Date => {
       const year = previousDate.getFullYear();
       const day = previousDate.getDate();
 
@@ -49,7 +38,7 @@ export default function Datepicker({
   }
 
   function selectDate(date: number) {
-    setSelectedDate(previousDate => {
+    setSelectedDate((previousDate: Date): Date => {
       return new Date(
         previousDate.getFullYear(),
         previousDate.getMonth(),
@@ -59,17 +48,13 @@ export default function Datepicker({
   }
 
   return (
-    <View style={width < 500 ? styles.container : styles.containerRow}>
-      <View style={styles.dateSelectWrapper}>
-        <HoursDropdownComponent onSelected={onHoursChanged} />
+    <View style={styles.container}>
         <CalendarDayDropdownComponent
           onSelected={selectDate}
           selectedMonth={selectedDate.getMonth()}
           selectedYear={selectedDate.getFullYear()}
           selectedDate={selectedDate.getDate()}
         />
-      </View>
-      <View style={styles.dateSelectWrapper}>
         <CalendarMonthDropdownComponent
           onSelected={selectMonth}
           selectedMonth={selectedDate.getMonth()}
@@ -78,7 +63,6 @@ export default function Datepicker({
           onSelected={selectYear}
           selectedYear={selectedDate.getFullYear()}
         />
-      </View>
     </View>
   )
 };
@@ -88,17 +72,5 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: 16,
-  },
-  containerRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 16,
-    justifyContent: 'center'
-  },
-  dateSelectWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 16,
-    justifyContent: 'space-between',
   },
 });

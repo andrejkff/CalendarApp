@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   },
   calendarDropdown: {
     backgroundColor: calendarInputBackgroundColor,
-    width: 120,
+    width: '100%',
     height: 56,
   },
 });

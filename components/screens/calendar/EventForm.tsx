@@ -3,40 +3,33 @@ import { User } from '@react-native-firebase/auth';
 
 import { IEventView } from '../../../types/api/event';
 
-interface Props { user: User, selectedDate: Date, selectedHours: number };
+interface Props {
+  user: User,
+  selectedDate: Date,
+  selectedHours: number,
+  selectedEvent: IEventView | null
+  onClose: () => void,
+};
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import calendarService from './_service';
 
-export default function EventForm({ user, selectedDate, selectedHours }: Props) {
-  const [eventName, setEventName] = useState('');
-  const [eventDescription, setEventDescription] = useState('');
+export default function EventForm({
+  user,
+  selectedDate,
+  selectedHours,
+  selectedEvent,
+  onClose,
+}: Props) {
+  const [eventName, setEventName] = useState(selectedEvent?.name || '');
+  const [eventDescription, setEventDescription] = useState(selectedEvent?.description || '');
   const [newEventSaved, setNewEventSaved] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<IEventView | null>(null);
   const [loading, setLoading] = useState(false);
-  const [searching, setSearching] = useState(false);
 
-  async function searchEvents() {
-    setSearching(true);
-    setNewEventSaved(false);
-    const result = await calendarService.getEvents(
-      user.uid,
-      selectedDate.getDate(),
-      selectedDate.getMonth(),
-      selectedDate.getFullYear(),
-      selectedHours,
-    );
-    setSearching(false);
-    if (!result?.length) {
-      setSelectedEvent(null);
-      setEventName('');
-      setEventDescription('');
-      return;
-    }
-    setSelectedEvent(result[0]);
-    setEventName(result[0].name);
-    setEventDescription(result[0].description);
-  };
+  useEffect(() => {
+    setEventName(selectedEvent?.name || '');
+    setEventDescription(selectedEvent?.description || '');
+  }, [selectedEvent]);
 
   async function saveEvent() {
     setLoading(true);
@@ -63,7 +56,6 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
   }
 
   function renderEventTimeUi() {
-    if (!selectedEvent && !newEventSaved) return <></>;
     const startDate = selectedEvent?.startDate || selectedDate.getDate();
     const startMonth = selectedEvent?.startMonth !== undefined ? selectedEvent.startMonth : selectedDate.getMonth();
     const startYear = selectedEvent?.startYear || selectedDate.getFullYear();
@@ -77,16 +69,10 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
 
   return (
     <View style={styles.container}>
-      <Button
-        title="Search events"
-        onPress={searchEvents}
-        disabled={loading || searching}
-      />
       <View style={styles.containerInner}>
         <Text style={styles.resultsLabel}>
-          { searching ?
-            'Searching...'
-            : !selectedEvent && !newEventSaved
+          {
+            !selectedEvent && !newEventSaved
             ? 'No event saved in this time slot'
             : 'Event details:'
           }
@@ -113,7 +99,13 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
         <Button
           title="Save event"
           onPress={() => selectedEvent ? updateEvent() : saveEvent()}
-          disabled={loading || searching}
+          disabled={loading}
+          testID="submit-event-button"
+        />
+        <Button
+          title="Back"
+          onPress={onClose}
+          disabled={loading}
           testID="submit-event-button"
         />
       </View>

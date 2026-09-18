@@ -1,24 +1,107 @@
-import { View, StyleSheet } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, StyleSheet, View } from 'react-native';
 import { User } from '@react-native-firebase/auth';
+
+import { IEventView } from '../../../types/api/event';
 
 import DatepickerComponent from './Datepicker';
 import EventForm from './EventForm';
+import EventsListComponent, { INewEventDetails } from './EventsList';
 
-import { useState } from 'react';
-
-interface Props { user: User };
+interface Props {
+  user: User;
+}
 
 export default function Calendar({ user }: Props) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [selectedHours, setSelectedHours] = useState<number>(12);
+
+  const [selectedEvent, setSelectedEvent] =
+    useState<IEventView | null | undefined>(undefined);
+
+  const [selectedHours, setSelectedHours] = useState<number>();
+
+  const [showForm, setShowForm] = useState(false);
+
+  const slide = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (showForm) {
+      Animated.timing(slide, {
+        toValue: 1,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [showForm, slide]);
+
+  function handleSelection(selection: IEventView | INewEventDetails) {
+    if ('id' in selection) {
+      setSelectedEvent(selection);
+    } else {
+      setSelectedEvent(null);
+      setSelectedHours(selection.hours);
+    }
+
+    setShowForm(true);
+  }
+
+  function closeForm() {
+    Animated.timing(slide, {
+      toValue: 0,
+      duration: 250,
+      useNativeDriver: true,
+    }).start(({ finished }) => {
+      if (finished) {
+        setShowForm(false);
+        setSelectedEvent(undefined);
+      }
+    });
+  }
+
+  const translateX = slide.interpolate({
+    inputRange: [0, 1],
+    outputRange: [300, 0],
+  });
 
   return (
     <View style={styles.container} testID="calendar-screen">
-      <DatepickerComponent
-        onDateChanged={setSelectedDate}
-        onHoursChanged={setSelectedHours}
-      />
-      <EventForm user={user} selectedDate={selectedDate} selectedHours={selectedHours} />
+      <View style={styles.content}>
+        {!showForm ? (
+          <View style={styles.datepickerAndSearchWrapper}>
+            <DatepickerComponent
+              setSelectedDate={setSelectedDate}
+              selectedDate={selectedDate}
+            />
+            <EventsListComponent
+              key="event-search"
+              user={user}
+              selectedDate={selectedDate}
+              onSelected={handleSelection}
+            />
+          </View>
+        ) : (
+          <Animated.View
+            key={selectedEvent?.id ?? 'new-event'}
+            style={[
+              styles.form,
+              {
+                transform: [{ translateX }],
+              },
+            ]}
+          >
+            <EventForm
+              key={selectedEvent?.id ?? 'new-event'}
+              user={user}
+              selectedDate={selectedDate}
+              selectedEvent={selectedEvent as IEventView | null}
+              selectedHours={
+                selectedEvent?.startHours ?? selectedHours!
+              }
+              onClose={closeForm}
+            />
+          </Animated.View>
+        )}
+      </View>
     </View>
   );
 }
@@ -26,9 +109,19 @@ export default function Calendar({ user }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: 'flex',
     flexDirection: 'column',
     gap: 36,
     padding: 36,
-  }
-})
+  },
+  datepickerAndSearchWrapper: {
+    display: 'flex',
+    gap: 36,
+  },
+  content: {
+    flex: 1,
+  },
+
+  form: {
+    flex: 1,
+  },
+});
