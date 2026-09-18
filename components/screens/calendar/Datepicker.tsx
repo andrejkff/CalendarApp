@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     gap: 16,
-    justifyContent: 'space-around'
+    justifyContent: 'center'
   },
   dateSelectWrapper: {
     display: 'flex',
