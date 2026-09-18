@@ -15,49 +15,53 @@ interface Props {
 
 export default function Calendar({ user }: Props) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
   const [selectedEvent, setSelectedEvent] =
     useState<IEventView | null | undefined>(undefined);
+
   const [selectedHours, setSelectedHours] = useState<number>();
 
-  const animation = useRef(new Animated.Value(0)).current;
+  const [showForm, setShowForm] = useState(false);
 
-  const showingForm = selectedEvent !== undefined;
+  const slide = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.timing(animation, {
-      toValue: showingForm ? 1 : 0,
-      duration: 250,
-      useNativeDriver: true,
-    }).start();
-  }, [showingForm, animation]);
+    if (showForm) {
+      Animated.timing(slide, {
+        toValue: 1,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [showForm, slide]);
 
   function handleSelection(selection: IEventView | INewEventDetails) {
-    if ((selection as IEventView).id) {
-      setSelectedEvent(selection as IEventView);
+    if ('id' in selection) {
+      setSelectedEvent(selection);
     } else {
       setSelectedEvent(null);
-      setSelectedHours((selection as INewEventDetails).hours);
+      setSelectedHours(selection.hours);
     }
+
+    setShowForm(true);
   }
 
-  const searchTranslateX = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, -50],
-  });
+  function closeForm() {
+    Animated.timing(slide, {
+      toValue: 0,
+      duration: 250,
+      useNativeDriver: true,
+    }).start(({ finished }) => {
+      if (finished) {
+        setShowForm(false);
+        setSelectedEvent(undefined);
+      }
+    });
+  }
 
-  const formTranslateX = animation.interpolate({
+  const translateX = slide.interpolate({
     inputRange: [0, 1],
-    outputRange: [50, 0],
-  });
-
-  const searchOpacity = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 0],
-  });
-
-  const formOpacity = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 1],
+    outputRange: [300, 0],
   });
 
   return (
@@ -67,46 +71,35 @@ export default function Calendar({ user }: Props) {
       />
 
       <View style={styles.content}>
-        <Animated.View
-          style={[
-            styles.animatedContent,
-            {
-              opacity: searchOpacity,
-              transform: [{ translateX: searchTranslateX }],
-            },
-          ]}
-          pointerEvents={showingForm ? 'none' : 'auto'}
-        >
-          {
-            !showingForm &&
-            <EventsSearchComponent
-              user={user}
-              selectedDate={selectedDate}
-              onSelected={handleSelection}
-            />
-          }
-        </Animated.View>
-
-        <Animated.View
-          style={[
-            styles.animatedContent,
-            {
-              opacity: formOpacity,
-              transform: [{ translateX: formTranslateX }],
-            },
-          ]}
-          pointerEvents={showingForm ? 'auto' : 'none'}
-        >
-          <EventForm
+        {!showForm ? (
+          <EventsSearchComponent
+            key="event-search"
             user={user}
             selectedDate={selectedDate}
-            selectedEvent={selectedEvent as IEventView | null}
-            selectedHours={
-              selectedEvent?.startHours || selectedHours!
-            }
-            onClose={() => setSelectedEvent(undefined)}
+            onSelected={handleSelection}
           />
-        </Animated.View>
+        ) : (
+          <Animated.View
+            key={selectedEvent?.id ?? 'new-event'}
+            style={[
+              styles.form,
+              {
+                transform: [{ translateX }],
+              },
+            ]}
+          >
+            <EventForm
+              key={selectedEvent?.id ?? 'new-event'}
+              user={user}
+              selectedDate={selectedDate}
+              selectedEvent={selectedEvent as IEventView | null}
+              selectedHours={
+                selectedEvent?.startHours ?? selectedHours!
+              }
+              onClose={closeForm}
+            />
+          </Animated.View>
+        )}
       </View>
     </View>
   );
@@ -122,14 +115,9 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
-    position: 'relative',
   },
 
-  animatedContent: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
+  form: {
+    flex: 1,
   },
 });
