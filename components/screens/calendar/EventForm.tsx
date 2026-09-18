@@ -70,8 +70,9 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
       />
       <View style={styles.containerInner}>
         <Text style={styles.resultsLabel}>
-          {
-            !selectedEvent && !newEventSaved
+          { loading ?
+            'Searching...'
+            : !selectedEvent && !newEventSaved
             ? 'No event saved in this time slot'
             : 'Event details:'
           }
