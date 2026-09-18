@@ -38,7 +38,6 @@ export default function EventForm({
     }, user);
     setNewEventSaved(true);
     setLoading(false);
-    onClose();
   };
 
   async function updateEvent() {
@@ -49,7 +48,6 @@ export default function EventForm({
       description: eventDescription,
     });
     setLoading(false);
-    onClose();
   }
 
   function renderEventTimeUi() {
