@@ -13,6 +13,7 @@ interface Props {
 
 import { useState, useEffect } from 'react';
 import calendarService from './_service';
+import formatTime from '../../../helpers/formatTime';
 
 export default function EventForm({
   user,
@@ -62,7 +63,7 @@ export default function EventForm({
     const startHours = selectedEvent?.startHours || selectedHours;
     return (
       <Text>
-        {startDate}/{startMonth + 1}/{startYear}, {startHours}:00
+        {startDate}/{startMonth + 1}/{startYear}, {formatTime(startHours)}
       </Text>
     );
   }

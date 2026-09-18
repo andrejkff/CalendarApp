@@ -2,6 +2,7 @@ import { View, StyleSheet, Button, Text, Pressable } from 'react-native';
 import { User } from '@react-native-firebase/auth';
 import { IEventView } from '../../../types/api/event';
 
+import formatTime from '../../../helpers/formatTime';
 import calendarService from './_service';
 import { useState, useEffect, useRef } from 'react';
 
@@ -37,7 +38,7 @@ export default function EventsList({
     const eventInTimeSlot = results.find(r => r.startHours === time);
     return (
       <View style={styles.timeSlot} key={time}>
-        <Text style={styles.hourMarker}>{time}:00</Text>
+        <Text style={styles.hourMarker}>{formatTime(time)}</Text>
         {
           eventInTimeSlot ?
           <Pressable style={[styles.eventLabel, styles.existingEvent]} onPress={() => onSelected(eventInTimeSlot)}>
