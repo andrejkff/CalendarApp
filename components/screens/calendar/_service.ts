@@ -39,7 +39,7 @@ async function updateEvent(
   });
 }
 
-async function getEvents(
+async function getEventDetails(
   userId: string,
   date: number,
   month: number,
@@ -67,6 +67,6 @@ export default {
   getNameOfDay,
   maxDaysIn,
   saveEvent,
-  getEvents,
+  getEventDetails,
   updateEvent,
 };

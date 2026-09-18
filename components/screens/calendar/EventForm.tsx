@@ -16,10 +16,10 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
   const [loading, setLoading] = useState(false);
   const [searching, setSearching] = useState(false);
 
-  async function searchEvents() {
+  async function loadEvent() {
     setSearching(true);
     setNewEventSaved(false);
-    const result = await calendarService.getEvents(
+    const result = await calendarService.getEventDetails(
       user.uid,
       selectedDate.getDate(),
       selectedDate.getMonth(),
@@ -79,7 +79,7 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
     <View style={styles.container}>
       <Button
         title="Search events"
-        onPress={searchEvents}
+        onPress={loadEvent}
         disabled={loading || searching}
       />
       <View style={styles.containerInner}>
