@@ -11,7 +11,7 @@ interface Props {
   onClose: () => void,
 };
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import calendarService from './_service';
 
 export default function EventForm({
@@ -25,6 +25,11 @@ export default function EventForm({
   const [eventDescription, setEventDescription] = useState(selectedEvent?.description || '');
   const [newEventSaved, setNewEventSaved] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setEventName(selectedEvent?.name || '');
+    setEventDescription(selectedEvent?.description || '');
+  }, [selectedEvent]);
 
   async function saveEvent() {
     setLoading(true);
