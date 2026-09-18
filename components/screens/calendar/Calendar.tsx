@@ -1,6 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { User } from '@react-native-firebase/auth';
 import { IEventView } from '../../../types/api/event';
+import { INewEventDetails } from './EventsSearch';
 
 import DatepickerComponent from './Datepicker';
 import EventForm from './EventForm';
@@ -15,12 +16,12 @@ export default function Calendar({ user }: Props) {
   const [selectedEvent, setSelectedEvent] = useState<IEventView | null | undefined>(undefined);
   const [selectedHours, setSelectedHours] = useState<number>();
 
-  function handleSelection(selection: IEventView | { hours: number }) {
+  function handleSelection(selection: IEventView | INewEventDetails) {
     if ((selection as IEventView).id) {
       setSelectedEvent(selection as IEventView);
     } else {
       setSelectedEvent(null);
-      setSelectedHours((selection as { hours: number}).hours)
+      setSelectedHours((selection as INewEventDetails).hours)
     };
   }
 

@@ -7,7 +7,9 @@ import { useState, useEffect } from 'react';
 
 import { HOURS } from '../../../constants/calendar';
 
-interface Props { user: User, selectedDate: Date, onSelected: (event: IEventView | { hours: number }) => void, };
+export interface INewEventDetails { hours: number };
+
+interface Props { user: User, selectedDate: Date, onSelected: (event: IEventView | INewEventDetails) => void, };
 
 export default function EventsSearch({
   user, selectedDate, onSelected,
