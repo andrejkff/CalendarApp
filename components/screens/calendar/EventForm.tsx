@@ -56,7 +56,6 @@ export default function EventForm({
   }
 
   function renderEventTimeUi() {
-    if (!selectedEvent && !newEventSaved) return <></>;
     const startDate = selectedEvent?.startDate || selectedDate.getDate();
     const startMonth = selectedEvent?.startMonth !== undefined ? selectedEvent.startMonth : selectedDate.getMonth();
     const startYear = selectedEvent?.startYear || selectedDate.getFullYear();

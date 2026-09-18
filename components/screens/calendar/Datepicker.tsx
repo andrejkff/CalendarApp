@@ -1,5 +1,4 @@
 import { View, StyleSheet } from 'react-native';
-import { useState, useEffect } from 'react';
 import calendarService from './_service';
 import { useWindowDimensions } from 'react-native';
 
@@ -8,21 +7,17 @@ import CalendarMonthDropdownComponent from '../../shared/inputs/calendarMonthDro
 import CalendarYearDropdownComponent from '../../shared/inputs/calendarYearDropdown';
 
 interface Props {
-  onDateChanged: (newDate: Date) => void;
+  selectedDate: Date,
+  setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
 }
 
 export default function Datepicker({
-  onDateChanged,
+  selectedDate, setSelectedDate,
 }: Props) {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const { width } = useWindowDimensions();
 
-  useEffect(() => {
-    onDateChanged(selectedDate);
-  }, [selectedDate]);
-
   function selectYear(year: number) {
-    setSelectedDate(previousDate => {
+    setSelectedDate((previousDate: Date): Date => {
       const month = previousDate.getMonth();
       const day = previousDate.getDate();
 
@@ -34,7 +29,7 @@ export default function Datepicker({
   }
 
   function selectMonth(month: number) {
-    setSelectedDate(previousDate => {
+    setSelectedDate((previousDate: Date): Date => {
       const year = previousDate.getFullYear();
       const day = previousDate.getDate();
 
@@ -46,7 +41,7 @@ export default function Datepicker({
   }
 
   function selectDate(date: number) {
-    setSelectedDate(previousDate => {
+    setSelectedDate((previousDate: Date): Date => {
       return new Date(
         previousDate.getFullYear(),
         previousDate.getMonth(),

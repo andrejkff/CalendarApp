@@ -3,11 +3,10 @@ import { Animated, StyleSheet, View } from 'react-native';
 import { User } from '@react-native-firebase/auth';
 
 import { IEventView } from '../../../types/api/event';
-import { INewEventDetails } from './EventsSearch';
 
 import DatepickerComponent from './Datepicker';
 import EventForm from './EventForm';
-import EventsSearchComponent from './EventsSearch';
+import EventsListComponent, { INewEventDetails } from './EventsList';
 
 interface Props {
   user: User;
@@ -66,18 +65,20 @@ export default function Calendar({ user }: Props) {
 
   return (
     <View style={styles.container} testID="calendar-screen">
-      <DatepickerComponent
-        onDateChanged={setSelectedDate}
-      />
-
       <View style={styles.content}>
         {!showForm ? (
-          <EventsSearchComponent
-            key="event-search"
-            user={user}
-            selectedDate={selectedDate}
-            onSelected={handleSelection}
-          />
+          <View style={styles.datepickerAndSearchWrapper}>
+            <DatepickerComponent
+              setSelectedDate={setSelectedDate}
+              selectedDate={selectedDate}
+            />
+            <EventsListComponent
+              key="event-search"
+              user={user}
+              selectedDate={selectedDate}
+              onSelected={handleSelection}
+            />
+          </View>
         ) : (
           <Animated.View
             key={selectedEvent?.id ?? 'new-event'}
@@ -112,7 +113,10 @@ const styles = StyleSheet.create({
     gap: 36,
     padding: 36,
   },
-
+  datepickerAndSearchWrapper: {
+    display: 'flex',
+    gap: 36,
+  },
   content: {
     flex: 1,
   },

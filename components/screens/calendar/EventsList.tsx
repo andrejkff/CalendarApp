@@ -11,7 +11,7 @@ export interface INewEventDetails { hours: number };
 
 interface Props { user: User, selectedDate: Date, onSelected: (event: IEventView | INewEventDetails) => void, };
 
-export default function EventsSearch({
+export default function EventsList({
   user, selectedDate, onSelected,
 }: Props) {
   const [searching, setSearching] = useState(false);
