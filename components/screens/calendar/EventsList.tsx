@@ -3,7 +3,7 @@ import { User } from '@react-native-firebase/auth';
 import { IEventView } from '../../../types/api/event';
 
 import calendarService from './_service';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { HOURS } from '../../../constants/calendar';
 
@@ -16,6 +16,7 @@ export default function EventsList({
 }: Props) {
   const [searching, setSearching] = useState(false);
   const [results, setResults] = useState<IEventView[]>([]);
+  const selectedDateRef = useRef<Date>(selectedDate || new Date());
 
   async function searchEvents() {
     setSearching(true);
@@ -23,6 +24,7 @@ export default function EventsList({
     const _results = await calendarService.getEventsInDay(
       user.uid, selectedDate.getDate(), selectedDate.getMonth(), selectedDate.getFullYear(),
     );
+    selectedDateRef.current = selectedDate;
     setResults(_results);
     setSearching(false);
   };
@@ -56,6 +58,9 @@ export default function EventsList({
         disabled={searching}
         onPress={searchEvents}
       />
+      <Text style={{ fontWeight: 'bold' }}>
+        Showing events for: {selectedDateRef.current.toLocaleString('mk-MK', { dateStyle: 'short' })}
+      </Text>
       <View style={[styles.timeSlotsList, searching && styles.timeSlotsListSearching]}>
         {HOURS.map(h => renderTimeSlot(h))}
       </View>
