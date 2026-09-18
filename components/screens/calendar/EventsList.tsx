@@ -15,7 +15,7 @@ interface Props { user: User, selectedDate: Date, onSelected: (event: IEventView
 export default function EventsList({
   user, selectedDate, onSelected,
 }: Props) {
-  const [searching, setSearching] = useState(false);
+  const [searching, setSearching] = useState(true);
   const [results, setResults] = useState<IEventView[]>([]);
   const selectedDateRef = useRef<Date>(selectedDate || new Date());
 
