@@ -27,15 +27,14 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
       selectedHours,
     );
     setSearching(false);
-    if (!result?.length) {
-      setSelectedEvent(null);
+    setSelectedEvent(result);
+    if (!result) {
       setEventName('');
       setEventDescription('');
       return;
     }
-    setSelectedEvent(result[0]);
-    setEventName(result[0].name);
-    setEventDescription(result[0].description);
+    setEventName(result.name);
+    setEventDescription(result.description);
   };
 
   async function saveEvent() {

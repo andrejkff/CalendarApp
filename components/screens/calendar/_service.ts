@@ -45,7 +45,7 @@ async function getEventDetails(
   month: number,
   year: number,
   hours: number
-): Promise<IEventView[]> {
+): Promise<IEventView | null> {
   const q = query(
     collection(db, 'events'),
     where('userId', '==', userId),
@@ -57,10 +57,12 @@ async function getEventDetails(
 
   const snapshot = await getDocs(q);
 
+  if (!snapshot.docs?.length) return null;
+
   return snapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data(),
-  })) as IEventView[];
+  }))[0] as IEventView;
 }
 
 export default {
