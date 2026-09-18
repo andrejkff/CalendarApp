@@ -27,6 +27,10 @@ export default function EventForm({
   const [newEventSaved, setNewEventSaved] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  function formIsValid(): boolean {
+    return !!eventName.length && !!eventDescription.length;
+  }
+
   useEffect(() => {
     setEventName(selectedEvent?.name || '');
     setEventDescription(selectedEvent?.description || '');
@@ -100,7 +104,7 @@ export default function EventForm({
         <Button
           title="Save event"
           onPress={() => selectedEvent ? updateEvent() : saveEvent()}
-          disabled={loading}
+          disabled={loading || !formIsValid()}
           testID="submit-event-button"
         />
         <Button
