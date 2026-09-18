@@ -26,7 +26,7 @@ export default function Navbar({
         </>
       }
       <Button
-        title="Close"
+        title="Close menu"
         onPress={onClose}
       />
     </View>
