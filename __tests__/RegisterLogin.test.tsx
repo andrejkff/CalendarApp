@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 
-import RegisterLoginComponent from '../components/auth/RegisterLogin';
+import RegisterLoginComponent from '../components/screens/auth/RegisterLogin';
 import EmailInputComponent from '../components/shared/inputs/email';
 import PasswordInputComponent from '../components/shared/inputs/password';
 
@@ -16,6 +16,12 @@ jest.mock('firebase/auth', () => ({
 
 jest.mock('../firebase', () => ({
   auth: {},
+}));
+
+jest.mock('../components/screens/auth/_service', () => ({
+  isBiometricAvailable: jest.fn().mockResolvedValue(false),
+  saveBiometricCredentials: jest.fn().mockResolvedValue(undefined),
+  getBiometricCredentials: jest.fn().mockResolvedValue(null),
 }));
 
 const mockCreateUser =
