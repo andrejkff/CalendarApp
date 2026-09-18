@@ -61,23 +61,23 @@ export default function Datepicker({
   return (
     <View style={width < 500 ? styles.container : styles.containerRow}>
       <View style={styles.dateSelectWrapper}>
+        <HoursDropdownComponent onSelected={onHoursChanged} />
         <CalendarDayDropdownComponent
           onSelected={selectDate}
           selectedMonth={selectedDate.getMonth()}
           selectedYear={selectedDate.getFullYear()}
           selectedDate={selectedDate.getDate()}
         />
+      </View>
+      <View style={styles.dateSelectWrapper}>
         <CalendarMonthDropdownComponent
           onSelected={selectMonth}
           selectedMonth={selectedDate.getMonth()}
         />
-      </View>
-      <View style={styles.dateSelectWrapper}>
         <CalendarYearInputComponent
           onSelected={selectYear}
           selectedYear={selectedDate.getFullYear()}
         />
-        <HoursDropdownComponent onSelected={onHoursChanged} />
       </View>
     </View>
   )
