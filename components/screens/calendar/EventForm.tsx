@@ -77,6 +77,12 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
             : 'Event details:'
           }
         </Text>
+        {
+          !!selectedEvent &&
+          <Text>
+            {selectedEvent.startDate}/{selectedEvent.startMonth + 1}/{selectedEvent.startYear}, {selectedEvent.startHours}:00
+          </Text>
+        }
         <View style={styles.formFieldsWrapper}>
           <TextInput
             value={eventName}
