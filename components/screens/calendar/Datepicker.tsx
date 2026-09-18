@@ -5,7 +5,7 @@ import { useWindowDimensions } from 'react-native';
 
 import CalendarDayDropdownComponent from '../../shared/inputs/calendarDayDropdown';
 import CalendarMonthDropdownComponent from '../../shared/inputs/calendarMonthDropdown';
-import CalendarYearInputComponent from '../../shared/inputs/calendarYear';
+import CalendarYearDropdownComponent from '../../shared/inputs/calendarYearDropdown';
 import HoursDropdownComponent from '../../shared/inputs/hoursDropdown';
 
 interface Props {
@@ -74,7 +74,7 @@ export default function Datepicker({
           onSelected={selectMonth}
           selectedMonth={selectedDate.getMonth()}
         />
-        <CalendarYearInputComponent
+        <CalendarYearDropdownComponent
           onSelected={selectYear}
           selectedYear={selectedDate.getFullYear()}
         />
