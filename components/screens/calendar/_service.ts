@@ -59,37 +59,10 @@ async function getEventsInDay(
   })) as IEventView[];
 }
 
-async function getEventDetails(
-  userId: string,
-  date: number,
-  month: number,
-  year: number,
-  hours: number
-): Promise<IEventView | null> {
-  const q = query(
-    collection(db, 'events'),
-    where('userId', '==', userId),
-    where('startDate', '==', date),
-    where('startMonth', '==', month),
-    where('startYear', '==', year),
-    where('startHours', '==', hours),
-  );
-
-  const snapshot = await getDocs(q);
-
-  if (!snapshot.docs?.length) return null;
-
-  return snapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data(),
-  }))[0] as IEventView;
-}
-
 export default {
   getNameOfDay,
   maxDaysIn,
   saveEvent,
-  getEventDetails,
   updateEvent,
   getEventsInDay,
 };
