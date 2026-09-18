@@ -6,16 +6,13 @@ import { useWindowDimensions } from 'react-native';
 import CalendarDayDropdownComponent from '../../shared/inputs/calendarDayDropdown';
 import CalendarMonthDropdownComponent from '../../shared/inputs/calendarMonthDropdown';
 import CalendarYearDropdownComponent from '../../shared/inputs/calendarYearDropdown';
-import HoursDropdownComponent from '../../shared/inputs/hoursDropdown';
 
 interface Props {
   onDateChanged: (newDate: Date) => void;
-  onHoursChanged: (newHours: number) => void;
 }
 
 export default function Datepicker({
   onDateChanged,
-  onHoursChanged,
 }: Props) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const { width } = useWindowDimensions();
@@ -61,19 +58,18 @@ export default function Datepicker({
   return (
     <View style={width < 500 ? styles.container : styles.containerRow}>
       <View style={styles.dateSelectWrapper}>
-        <HoursDropdownComponent onSelected={onHoursChanged} />
         <CalendarDayDropdownComponent
           onSelected={selectDate}
           selectedMonth={selectedDate.getMonth()}
           selectedYear={selectedDate.getFullYear()}
           selectedDate={selectedDate.getDate()}
         />
-      </View>
-      <View style={styles.dateSelectWrapper}>
         <CalendarMonthDropdownComponent
           onSelected={selectMonth}
           selectedMonth={selectedDate.getMonth()}
         />
+      </View>
+      <View style={styles.dateSelectWrapper}>
         <CalendarYearDropdownComponent
           onSelected={selectYear}
           selectedYear={selectedDate.getFullYear()}

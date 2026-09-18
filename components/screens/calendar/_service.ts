@@ -39,6 +39,26 @@ async function updateEvent(
   });
 }
 
+async function getEventsInDay(
+  userId: string,
+  date: number,
+  month: number,
+  year: number,
+): Promise<IEventView[]> {
+  const q = query(
+    collection(db, 'events'),
+    where('userId', '==', userId),
+    where('startDate', '==', date),
+    where('startMonth', '==', month),
+    where('startYear', '==', year),
+  );
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as IEventView[];
+}
+
 async function getEventDetails(
   userId: string,
   date: number,
@@ -71,4 +91,5 @@ export default {
   saveEvent,
   getEventDetails,
   updateEvent,
+  getEventsInDay,
 };

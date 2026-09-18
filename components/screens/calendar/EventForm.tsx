@@ -3,39 +3,28 @@ import { User } from '@react-native-firebase/auth';
 
 import { IEventView } from '../../../types/api/event';
 
-interface Props { user: User, selectedDate: Date, selectedHours: number };
+interface Props {
+  user: User,
+  selectedDate: Date,
+  selectedHours: number,
+  selectedEvent: IEventView | null
+  onClose: () => void,
+};
 
 import { useState } from 'react';
 import calendarService from './_service';
 
-export default function EventForm({ user, selectedDate, selectedHours }: Props) {
-  const [eventName, setEventName] = useState('');
-  const [eventDescription, setEventDescription] = useState('');
+export default function EventForm({
+  user,
+  selectedDate,
+  selectedHours,
+  selectedEvent,
+  onClose,
+}: Props) {
+  const [eventName, setEventName] = useState(selectedEvent?.name || '');
+  const [eventDescription, setEventDescription] = useState(selectedEvent?.description || '');
   const [newEventSaved, setNewEventSaved] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState<IEventView | null>(null);
   const [loading, setLoading] = useState(false);
-  const [searching, setSearching] = useState(false);
-
-  async function loadEvent() {
-    setSearching(true);
-    setNewEventSaved(false);
-    const result = await calendarService.getEventDetails(
-      user.uid,
-      selectedDate.getDate(),
-      selectedDate.getMonth(),
-      selectedDate.getFullYear(),
-      selectedHours,
-    );
-    setSearching(false);
-    setSelectedEvent(result);
-    if (!result) {
-      setEventName('');
-      setEventDescription('');
-      return;
-    }
-    setEventName(result.name);
-    setEventDescription(result.description);
-  };
 
   async function saveEvent() {
     setLoading(true);
@@ -49,6 +38,7 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
     }, user);
     setNewEventSaved(true);
     setLoading(false);
+    onClose();
   };
 
   async function updateEvent() {
@@ -59,6 +49,7 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
       description: eventDescription,
     });
     setLoading(false);
+    onClose();
   }
 
   function renderEventTimeUi() {
@@ -76,16 +67,10 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
 
   return (
     <View style={styles.container}>
-      <Button
-        title="Search events"
-        onPress={loadEvent}
-        disabled={loading || searching}
-      />
       <View style={styles.containerInner}>
         <Text style={styles.resultsLabel}>
-          { searching ?
-            'Searching...'
-            : !selectedEvent && !newEventSaved
+          {
+            !selectedEvent && !newEventSaved
             ? 'No event saved in this time slot'
             : 'Event details:'
           }
@@ -112,7 +97,13 @@ export default function EventForm({ user, selectedDate, selectedHours }: Props) 
         <Button
           title="Save event"
           onPress={() => selectedEvent ? updateEvent() : saveEvent()}
-          disabled={loading || searching}
+          disabled={loading}
+          testID="submit-event-button"
+        />
+        <Button
+          title="Back"
+          onPress={onClose}
+          disabled={loading}
           testID="submit-event-button"
         />
       </View>

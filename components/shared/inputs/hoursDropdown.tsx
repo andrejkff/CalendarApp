@@ -2,6 +2,8 @@ import { Picker } from '@react-native-picker/picker';
 import { View, Text } from 'react-native';
 import { styles } from './_styles';
 
+import { HOURS } from '../../../constants/calendar';
+
 interface Props {
   onSelected: (hours: number) => void,
   selectedHours?: number;
@@ -21,10 +23,7 @@ export default function HoursDropdown({
         style={styles.calendarDropdown}
         testID="hours-picker"
       >
-        {Array.from(
-          { length: 24 },
-          (_, i) => i
-        ).map(hour => (
+        {HOURS.map(hour => (
           <Picker.Item
             label={`${hour.toString()}:00`}
             value={hour}
