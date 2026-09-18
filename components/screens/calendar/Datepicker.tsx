@@ -1,6 +1,5 @@
 import { View, StyleSheet } from 'react-native';
 import calendarService from './_service';
-import { useWindowDimensions } from 'react-native';
 
 import CalendarDayDropdownComponent from '../../shared/inputs/calendarDayDropdown';
 import CalendarMonthDropdownComponent from '../../shared/inputs/calendarMonthDropdown';
@@ -14,8 +13,6 @@ interface Props {
 export default function Datepicker({
   selectedDate, setSelectedDate,
 }: Props) {
-  const { width } = useWindowDimensions();
-
   function selectYear(year: number) {
     setSelectedDate((previousDate: Date): Date => {
       const month = previousDate.getMonth();
@@ -51,8 +48,7 @@ export default function Datepicker({
   }
 
   return (
-    <View style={width < 500 ? styles.container : styles.containerRow}>
-      <View style={styles.dateSelectWrapper}>
+    <View style={styles.container}>
         <CalendarDayDropdownComponent
           onSelected={selectDate}
           selectedMonth={selectedDate.getMonth()}
@@ -63,13 +59,10 @@ export default function Datepicker({
           onSelected={selectMonth}
           selectedMonth={selectedDate.getMonth()}
         />
-      </View>
-      <View style={styles.dateSelectWrapper}>
         <CalendarYearDropdownComponent
           onSelected={selectYear}
           selectedYear={selectedDate.getFullYear()}
         />
-      </View>
     </View>
   )
 };
@@ -79,17 +72,5 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: 16,
-  },
-  containerRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 16,
-    justifyContent: 'center'
-  },
-  dateSelectWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 16,
-    justifyContent: 'space-between',
   },
 });
