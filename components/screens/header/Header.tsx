@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 64,
     paddingHorizontal: 12,
-    paddingTop: 24,
-    backgroundColor: '#d7d7d7',
+    paddingVertical: 36,
+    backgroundColor: '#2196F3',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     top: 24,
     textAlign: 'center',
     fontSize: 18,
+    color: 'white',
   },
 
   menuButton: {
@@ -122,12 +123,12 @@ const styles = StyleSheet.create({
     width: 24,
     height: 2,
     marginVertical: 2,
-    backgroundColor: '#222',
+    backgroundColor: 'white',
   },
 
   navbar: {
     position: 'absolute',
-    top: 64,
+    top: 72,
     left: 0,
     bottom: 0,
     width: 128,

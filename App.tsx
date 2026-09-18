@@ -6,7 +6,7 @@ import {
   Animated,
   ScrollView,
 } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { auth } from './firebase';
 
 import RegisterLoginComponent from './components/screens/auth/RegisterLogin';
@@ -23,10 +23,12 @@ function App() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-      />
-      <AppContent />
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        />
+        <AppContent />
+      </SafeAreaView>
     </SafeAreaProvider>
   );
 }
